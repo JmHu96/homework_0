@@ -38,40 +38,4 @@ def power(a, n):
 
     assume n is a nonegative integer
     """
-    
-    if n == 1:
-        return a
-    if n == 0:
-        return 1
-    
-    product = 1
-    for i in range(1,n+1):
-        product = egyptian_multiplication(product,a)
-        
-    return product
-    
-    
-if __name__ == '__main__':
-    # this code runs when executed as a script
-    for a in [3,4,5]:
-        for n in [0,1,3,4,5]:
-            print("{} ** {} = {}".format(a, n, power(a,n)))
-              
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    pass
