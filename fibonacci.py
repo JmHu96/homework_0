@@ -37,17 +37,31 @@ def fibonacci_iter(n):
 
 # Question 3
 def fibonacci_power(n):
-    def egyptian_power(n):
-        A = np.array([[1,1],[1,0]])      
-        B = np.array([[1,0],[0,1]])
-        for i in range(n):
-            # Replaced egyptian multiplcation with built in multiplication
-             B[0,0],B[0,1],B[1,0],B[1,1] = [A[0,0]*B[0,0]+A[0,1]*B[1,0],
-                                            A[0,0]*B[0,1]+A[0,1]*B[1,1],
-                                            A[1,0]*B[0,0]+A[1,1]*B[1,0],
-                                            A[1,0]*B[0,1]+A[1,1]*B[1,1]]
-            
-        return B
+    # Due to the nature of this problem, A is symmetric, so if B = A@A, then B is symmetric, so does A@B.
+    # So we only have to compute 3 entries at max.
+    def twobytwosymmul(A,B):
+        C11 = A[0,0]*B[0,0]+A[0,1]*B[1,0]
+        C12 = A[1,0]*B[0,0]+A[1,1]*B[1,0]
+        C22 = A[1,0]*B[0,1]+A[1,1]*B[1,1]
+        return np.array([[C11,C12],[C12,C22]])
+    
+    A = np.array([[1,1],[1,0]]) 
+    
+    def egyptian_power(A, n):
+             
+        def isodd(n):
+            return n & 0x1 == 1
+        
+        # Two special cases
+        if n == 1:
+            return A
+        if n == 0:
+            return np.array[[1,0],[0,1]]
+        
+        if isodd(n):
+            return twobytwosymmul(egyptian_power(twobytwosymmul(A,A), n//2),A)
+        else:
+            return egyptian_power(twobytwosymmul(A,A), n//2)
     
     # Everything is the same as above.
     x = np.array([1,0])
@@ -56,7 +70,7 @@ def fibonacci_power(n):
     if n == 1:
         return x[0]
     
-    A = egyptian_power(n-1)
+    A = egyptian_power(A, n-1)
     
     return(A[0,0])
     

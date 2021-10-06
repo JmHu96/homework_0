@@ -38,17 +38,19 @@ def power(a, n):
 
     assume n is a nonegative integer
     """
+    def isodd(n):
+        return n & 0x1 == 1
     
     if n == 1:
         return a
     if n == 0:
         return 1
     
-    product = 1
-    for i in range(1,n+1):
-        product = egyptian_multiplication(product,a)
-        
-    return product
+    if isodd(n):
+        return egyptian_multiplication(power(egyptian_multiplication(a,a), n//2), a)
+    else:
+        return power(egyptian_multiplication(a,a), n//2)
+    
     
     
 if __name__ == '__main__':
